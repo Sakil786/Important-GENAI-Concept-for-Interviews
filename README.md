@@ -18,3 +18,35 @@
 * This allows for fine-tuning large models with significantly less memory while aiming to maintain performance.
 * The QLoRA paper provides specific Dropout values used for different model sizes (e.g., 0.1 for 7B/13B and 0.05 for 33B/65B).
 
+## The five levels of chunking strategies :
+### **Level 1: Fixed Size Chunking**:
+* This is the simplest method, breaking text into chunks of a specified number of characters.
+* It doesn't consider the content or structure of the text.
+* Frameworks like Langchain and LlamaIndex offer classes such as CharacterTextSplitter and SentenceSplitter for this technique.
+* Key concepts include how text is split (by single character), how chunk size is measured (by number of characters), chunk_size (the number of characters in the chunks), chunk_overlap (the number of overlapping characters between chunks), and separator (the character(s) to split on, defaulting to "").
+
+### **Level 2: Recursive Chunking:**
+* This method divides text hierarchically and iteratively using a set of separators.
+* It attempts to split the text and if the chunks are not the desired size, it recursively splits the resulting chunks with a different separator.
+* The Langchain framework provides the RecursiveCharacterTextSplitter class, which uses default separators like “\n\n”, “\n”, “ “,””.
+* It offers an alternative to fixed-size chunking by considering text structure.
+### **Level 3: Document Based Chunking:**
+* This approach splits a document based on its inherent structure.
+* It considers the flow and structure of content but might be less effective for documents without clear structure.
+* Examples include:
+  * Documents with Markdown, where Langchain's MarkdownTextSplitter can be used.
+  * Documents with Python/JS code, where Langchain's PythonCodeTextSplitter or the from_language method of RecursiveCharacterTextSplitter can be used.
+  * Documents with tables, where preserving relationships requires formatting (e.g., HTML <table> tags, CSV with ';') and often involves summarising the table for embedding.
+  * Documents with images (Multi-Modal), where multi-modal models (like GPT-4 vision) can summarise images and their embeddings can be stored. Unstructured.io's partition_pdf can extract images from PDFs.
+### **Level 4: Semantic Chunking:**
+* This method focuses on extracting semantic meaning from embeddings and assessing semantic relationships between chunks.
+* It aims to keep semantically similar chunks together.
+* LlamaIndex provides the SemanticSplitterNodeParse class, which adaptively picks breakpoints between sentences using embedding similarity.
+* Key concepts include buffer_size (initial window for chunks), breakpoint_percentile_threshold (threshold for splitting), and embed_mode (the embedding model used).
+* Unlike previous levels, it deals with the meaning rather than just the content and structure, and doesn't necessitate a constant chunk size.
+### **Level 5: Agentic Chunking:**
+* This strategy uses LLMs to determine how much and what text should be included in a chunk based on context.
+* It uses the concept of Propositions to generate initial stand-alone statements from raw text. Langchain offers a propositional-retrieval template for this.
+* An LLM-based agent then decides whether a proposition should be added to an existing chunk or if a new chunk should be created.
+* Propositions are either created or included in existing chunks by the agent.
+
