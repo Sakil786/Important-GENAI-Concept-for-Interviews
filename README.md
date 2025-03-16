@@ -34,10 +34,11 @@
 * This approach splits a document based on its inherent structure.
 * It considers the flow and structure of content but might be less effective for documents without clear structure.
 * Examples include:
-  * Documents with Markdown, where Langchain's MarkdownTextSplitter can be used.
-  * Documents with Python/JS code, where Langchain's PythonCodeTextSplitter or the from_language method of RecursiveCharacterTextSplitter can be used.
-  * Documents with tables, where preserving relationships requires formatting (e.g., HTML <table> tags, CSV with ';') and often involves summarising the table for embedding.
-  * Documents with images (Multi-Modal), where multi-modal models (like GPT-4 vision) can summarise images and their embeddings can be stored. Unstructured.io's partition_pdf can extract images from PDFs.
+* Documents with Markdown, where Langchain's MarkdownTextSplitter can be used.
+* Documents with Python/JS code, where Langchain's PythonCodeTextSplitter or the from_language method of RecursiveCharacterTextSplitter can be used.
+* Documents with tables, where preserving relationships requires formatting (e.g., HTML <table> tags, CSV with ';') and often involves summarising the table for embedding.
+* Documents with images (Multi-Modal), where multi-modal models (like GPT-4 vision) can summarise images and their embeddings can be stored. Unstructured.io's partition_pdf can extract images from PDFs.
+    
 ### **Level 4: Semantic Chunking:**
 * This method focuses on extracting semantic meaning from embeddings and assessing semantic relationships between chunks.
 * It aims to keep semantically similar chunks together.
